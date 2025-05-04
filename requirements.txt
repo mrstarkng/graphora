@@ -1,0 +1,12 @@
+streamlit
+pandas
+numpy
+matplotlib
+seaborn
+scikit-learn
+catboost
+# xgboost # Bỏ comment nếu dùng XGBoost
+tqdm
+google-generativeai
+python-dotenv
+openpyxl # Cần cho việc đọc file .xlsx

@@ -1,0 +1,482 @@
+short_name,industry,net_asset_percent
+MBVF,Ngân hàng,46.82
+MBVF,Tiện ích,12.65
+MBVF,Bất động sản,11.57
+MBVF,Vật liệu xây dựng,4.71
+MBVF,"Sản xuất Thiết bị, máy móc",4.64
+MBVF,Bán buôn,4.28
+MBVF,Thực phẩm - Đồ uống,3.65
+MBVF,Sản xuất Phụ trợ,3.55
+MBVF,Thiết bị điện,1.21
+MBVF,Sản xuất Hàng gia dụng,0.87
+VCBF-MGF,Ngân hàng,20.22
+VCBF-MGF,Bất động sản,9.86
+VCBF-MGF,Công nghệ và thông tin,8.63
+VCBF-MGF,Sản xuất Phụ trợ,6.76
+VCBF-MGF,Tiện ích,6.37
+VCBF-MGF,Bán lẻ,5.66
+VCBF-MGF,Vận tải - Kho bãi,5.58
+VCBF-MGF,Xây dựng,5.55
+VCBF-MGF,Vật liệu xây dựng,4.35
+VCBF-MGF,Bảo hiểm,3.86
+VCBF-MGF,Thực phẩm - Đồ uống,2.76
+VCBF-MGF,Chứng khoán,2.67
+VCBF-MGF,Chăm sóc sức khỏe,2.39
+VCBF-MGF,Khai khoáng,1.87
+VCBF-MGF,Thiết bị điện,1.66
+VCBF-MGF,Bán buôn,1.42
+VCBF-MGF,Sản xuất Hàng gia dụng,1.39
+VCBF-MGF,Sản xuất,0.41
+VCBF-TBF,Ngân hàng,20.77
+VCBF-TBF,Thực phẩm - Đồ uống,12.69
+VCBF-TBF,Bất động sản,10.62
+VCBF-TBF,Công nghệ và thông tin,6.97
+VCBF-TBF,Sản xuất Phụ trợ,3.95
+VCBF-TBF,Bán lẻ,3.72
+VCBF-TBF,Vận tải - Kho bãi,3.48
+VCBF-TBF,Tiện ích,3.09
+VCBF-TBF,Vật liệu xây dựng,3.04
+VCBF-TBF,Xây dựng,1.93
+VCBF-TBF,Bảo hiểm,1.88
+VCBF-TBF,Chứng khoán,1.8
+VCBF-TBF,Khai khoáng,1.18
+VCBF-TBF,Sản xuất Hàng gia dụng,0.86
+VCBF-TBF,Thiết bị điện,0.68
+BVPF,Ngân hàng,28.73
+BVPF,Công nghệ và thông tin,12.02
+BVPF,Xây dựng,7.73
+BVPF,Tiện ích,7.71
+BVPF,Bất động sản,7.21
+BVPF,Vật liệu xây dựng,4.38
+BVPF,Bán lẻ,3.77
+BVPF,"Sản xuất Thiết bị, máy móc",3.77
+BVPF,Sản xuất Phụ trợ,3.56
+BVPF,Thực phẩm - Đồ uống,3.34
+BVPF,Bán buôn,2.79
+BVPF,Sản xuất Hàng gia dụng,2.48
+SSISCA,Ngân hàng,35.22
+SSISCA,Bất động sản,16.32
+SSISCA,Công nghệ và thông tin,7.18
+SSISCA,Sản xuất Nhựa - Hóa chất,5.57
+SSISCA,Vật liệu xây dựng,5.27
+SSISCA,Bán lẻ,4.19
+SSISCA,Thực phẩm - Đồ uống,3.66
+SSISCA,Thiết bị điện,3.38
+SSISCA,"Sản xuất Thiết bị, máy móc",2.95
+SSISCA,Vận tải - Kho bãi,2.81
+SSISCA,Tiện ích,2.51
+SSISCA,Sản xuất Phụ trợ,1.76
+SSISCA,Chứng khoán,1.25
+SSISCA,Khai khoáng,0.96
+VIBF,Ngân hàng,17.42
+VIBF,Bất động sản,6.34
+VIBF,Vật liệu xây dựng,3.75
+VIBF,Sản xuất Nhựa - Hóa chất,3.01
+VIBF,Vận tải - Kho bãi,3.01
+VIBF,"Sản xuất Thiết bị, máy móc",3.01
+VIBF,Công nghệ và thông tin,2.68
+VIBF,Tiện ích,2.6
+VIBF,Khai khoáng,2.44
+VIBF,Chứng khoán,2.36
+VIBF,Khác,2.17
+VIBF,Nông - Lâm - Ngư,1.89
+VIBF,Xây dựng,1.84
+VIBF,Bán lẻ,1.81
+VIBF,Sản xuất Phụ trợ,1.14
+VIBF,Thực phẩm - Đồ uống,1.09
+VCAMBF,Ngân hàng,23.69
+VCAMBF,Bất động sản,8.7
+VCAMBF,Công nghệ và thông tin,6.53
+VCAMBF,Vận tải - Kho bãi,6.36
+VCAMBF,Bán lẻ,3.67
+VCAMBF,Vật liệu xây dựng,3.11
+VCAMBF,Thực phẩm - Đồ uống,2.65
+VCAMBF,Sản xuất Nhựa - Hóa chất,2.35
+VCAMBF,Xây dựng,2.06
+VCAMBF,Tiện ích,1.8
+VCAMBF,Chứng khoán,1.78
+VCAMBF,"Sản xuất Thiết bị, máy móc",1.67
+VCAMBF,Bảo hiểm,1.33
+VCAMBF,Khai khoáng,1.28
+VCAMBF,Năng lượng,0.72
+VLGF,Ngân hàng,32.1
+VLGF,Bất động sản,11.48
+VLGF,Bán lẻ,9.64
+VLGF,Công nghệ và thông tin,9.06
+VLGF,Sản xuất Phụ trợ,7.83
+VLGF,Tiện ích,6.36
+VLGF,"Sản xuất Thiết bị, máy móc",4.98
+VLGF,Thực phẩm - Đồ uống,3.69
+VLGF,Sản xuất Hàng gia dụng,3.3
+VLGF,Vận tải - Kho bãi,3.02
+MAFBAL,Ngân hàng,22.48
+MAFBAL,Bất động sản,16.13
+MAFBAL,Thực phẩm - Đồ uống,6.74
+MAFBAL,Công nghệ và thông tin,4.0
+MAFBAL,Vật liệu xây dựng,3.92
+MAFBAL,Tiện ích,2.21
+MAFBAL,Bán lẻ,2.07
+MAFBAL,Vận tải - Kho bãi,1.6
+MAFBAL,Sản xuất Nhựa - Hóa chất,1.2
+MAFBAL,Khai khoáng,1.03
+MAFBAL,Xây dựng,1.0
+MAFBAL,Chứng khoán,0.99
+MAFBAL,Sản xuất Phụ trợ,0.84
+MAFBAL,Thiết bị điện,0.72
+MAFBAL,Chế biến thủy sản,0.49
+DCDS,Ngân hàng,28.88
+DCDS,Bất động sản,16.24
+DCDS,Bán lẻ,8.44
+DCDS,Công nghệ và thông tin,5.11
+DCDS,Vật liệu xây dựng,4.61
+DCDS,Vận tải - Kho bãi,3.67
+DCDS,Thiết bị điện,2.59
+DCDS,Xây dựng,1.86
+DCDS,Thực phẩm - Đồ uống,1.66
+DCDS,Tiện ích,1.24
+DCDS,Chứng khoán,1.19
+DCDS,Sản xuất Nhựa - Hóa chất,1.16
+DCDS,"Sản xuất Thiết bị, máy móc",0.81
+DCDS,"Dịch vụ tư vấn, hỗ trợ",0.56
+DCDS,Nông - Lâm - Ngư,0.36
+DCDS,Dịch vụ viễn thông,0.25
+DCDS,Bán buôn,0.17
+VCBF-BCF,Ngân hàng,34.44
+VCBF-BCF,Công nghệ và thông tin,10.67
+VCBF-BCF,Bất động sản,6.92
+VCBF-BCF,Thực phẩm - Đồ uống,6.73
+VCBF-BCF,Bán lẻ,6.05
+VCBF-BCF,Sản xuất Phụ trợ,6.03
+VCBF-BCF,Vận tải - Kho bãi,5.27
+VCBF-BCF,Tiện ích,4.91
+VCBF-BCF,Vật liệu xây dựng,4.65
+VCBF-BCF,Chứng khoán,2.85
+VCBF-BCF,Bảo hiểm,2.47
+VCBF-BCF,Xây dựng,2.16
+VCBF-BCF,Khai khoáng,1.89
+VCBF-BCF,Thiết bị điện,0.99
+ENF,Ngân hàng,31.41
+ENF,Bất động sản,7.52
+ENF,Công nghệ và thông tin,4.92
+ENF,Khác,4.68
+ENF,Vật liệu xây dựng,4.36
+ENF,Chứng khoán,3.94
+ENF,Thiết bị điện,3.26
+ENF,Vận tải - Kho bãi,2.5
+ENF,Thực phẩm - Đồ uống,2.44
+ENF,Xây dựng,1.67
+ENF,Bán lẻ,1.64
+ENF,Sản xuất Phụ trợ,1.53
+ENF,Chế biến thủy sản,0.98
+ENF,Khai khoáng,0.85
+ENF,Tiện ích,0.74
+VESAF,Ngân hàng,38.62
+VESAF,Bảo hiểm,7.29
+VESAF,Vận tải - Kho bãi,6.81
+VESAF,Công nghệ và thông tin,6.22
+VESAF,Sản xuất Phụ trợ,5.49
+VESAF,Bán lẻ,4.7
+VESAF,Bất động sản,4.42
+VESAF,Chế biến thủy sản,3.16
+VESAF,Chứng khoán,3.03
+VESAF,Khai khoáng,2.87
+VESAF,Sản xuất Nhựa - Hóa chất,2.86
+VESAF,Thực phẩm - Đồ uống,1.96
+VESAF,Xây dựng,1.84
+VESAF,Thiết bị điện,1.76
+VESAF,Tiện ích,1.13
+VESAF,Dịch vụ viễn thông,0.95
+BVFED,Ngân hàng,58.22
+BVFED,Bất động sản,10.47
+BVFED,Chứng khoán,7.58
+BVFED,Vật liệu xây dựng,5.48
+BVFED,Thực phẩm - Đồ uống,5.36
+BVFED,Tiện ích,4.58
+BVFED,Bán lẻ,3.99
+BVFED,Công nghệ và thông tin,1.17
+BVFED,Vận tải - Kho bãi,0.46
+BVFED,Sản xuất Nhựa - Hóa chất,0.25
+BVFED,Bán buôn,0.19
+DCDE,Ngân hàng,37.38
+DCDE,Bất động sản,6.88
+DCDE,Bán lẻ,6.71
+DCDE,Thực phẩm - Đồ uống,5.19
+DCDE,Vật liệu xây dựng,4.86
+DCDE,Tiện ích,3.61
+DCDE,Công nghệ và thông tin,2.97
+DCDE,Xây dựng,2.39
+DCDE,Sản xuất Nhựa - Hóa chất,2.17
+DCDE,Bảo hiểm,1.94
+DCDE,Chứng khoán,1.91
+DCDE,"Sản xuất Thiết bị, máy móc",1.54
+DCDE,Thiết bị điện,1.43
+DCDE,Vận tải - Kho bãi,1.26
+DCDE,"Dịch vụ tư vấn, hỗ trợ",0.93
+DCDE,Nông - Lâm - Ngư,0.58
+VEOF,Ngân hàng,37.03
+VEOF,Bất động sản,15.47
+VEOF,Sản xuất Nhựa - Hóa chất,6.51
+VEOF,Bán lẻ,5.47
+VEOF,Vật liệu xây dựng,5.29
+VEOF,Công nghệ và thông tin,4.95
+VEOF,Sản xuất Phụ trợ,3.87
+VEOF,Tiện ích,3.2
+VEOF,Vận tải - Kho bãi,3.02
+VEOF,Chế biến thủy sản,2.92
+VEOF,Thực phẩm - Đồ uống,2.3
+VEOF,"Sản xuất Thiết bị, máy móc",2.11
+VEOF,Bảo hiểm,1.63
+MAGEF,Ngân hàng,43.22
+MAGEF,Vật liệu xây dựng,8.81
+MAGEF,Công nghệ và thông tin,6.94
+MAGEF,Bán lẻ,6.51
+MAGEF,Khác,6.24
+MAGEF,Bất động sản,4.66
+MAGEF,Tiện ích,4.43
+MAGEF,Thiết bị điện,2.73
+MAGEF,Thực phẩm - Đồ uống,1.93
+MAGEF,Chứng khoán,1.75
+MAGEF,Chăm sóc sức khỏe,0.85
+MAGEF,"Sản xuất Thiết bị, máy móc",0.77
+MAFEQI,Ngân hàng,40.3
+MAFEQI,Bất động sản,8.49
+MAFEQI,Vật liệu xây dựng,7.1
+MAFEQI,Công nghệ và thông tin,5.35
+MAFEQI,Chứng khoán,5.2
+MAFEQI,Sản xuất Nhựa - Hóa chất,4.54
+MAFEQI,Tiện ích,4.43
+MAFEQI,Vận tải - Kho bãi,4.2
+MAFEQI,Bán lẻ,2.84
+MAFEQI,Xây dựng,2.47
+MAFEQI,Thiết bị điện,2.2
+MAFEQI,Chế biến thủy sản,2.04
+MAFEQI,Sản xuất Phụ trợ,1.76
+MAFEQI,Khai khoáng,1.06
+MAFEQI,Thực phẩm - Đồ uống,0.77
+VNDAF,Ngân hàng,25.35
+VNDAF,Bất động sản,9.49
+VNDAF,Vật liệu xây dựng,7.11
+VNDAF,Tiện ích,5.53
+VNDAF,Chứng khoán,5.26
+VNDAF,Thực phẩm - Đồ uống,4.71
+VNDAF,Khai khoáng,3.42
+VNDAF,Công nghệ và thông tin,3.4
+VNDAF,Bán lẻ,3.18
+VNDAF,Sản xuất Nhựa - Hóa chất,3.01
+VNDAF,Vận tải - Kho bãi,2.71
+VNDAF,Thiết bị điện,2.7
+VNDAF,Sản xuất Phụ trợ,2.55
+DCAF,Ngân hàng,42.18
+DCAF,Sản xuất Nhựa - Hóa chất,8.51
+DCAF,Thực phẩm - Đồ uống,8.0
+DCAF,Bất động sản,7.95
+DCAF,Công nghệ và thông tin,4.53
+DCAF,Vận tải - Kho bãi,4.22
+DCAF,Thiết bị điện,3.77
+DCAF,Vật liệu xây dựng,3.74
+DCAF,Bảo hiểm,2.55
+DCAF,Tiện ích,1.82
+DCAF,Chế biến thủy sản,1.29
+DCAF,Xây dựng,0.51
+DCAF,Bán lẻ,0.49
+DCAF,Sản xuất Phụ trợ,0.44
+DCAF,Chứng khoán,0.43
+TBLF,Vật liệu xây dựng,16.82
+TBLF,Sản xuất Phụ trợ,9.29
+TBLF,Bán lẻ,9.07
+TBLF,Thực phẩm - Đồ uống,7.64
+TBLF,Ngân hàng,4.83
+TBLF,Chế biến thủy sản,4.55
+TBLF,Tiện ích,4.25
+TBLF,Vận tải - Kho bãi,4.01
+TBLF,Chăm sóc sức khỏe,2.79
+UVDIF,Bất động sản,17.38
+UVDIF,Ngân hàng,16.24
+UVDIF,Nông - Lâm - Ngư,9.06
+UVDIF,Chứng khoán,7.28
+UVDIF,Thực phẩm - Đồ uống,5.13
+UVDIF,Sản xuất Nhựa - Hóa chất,3.26
+UVDIF,Khác,3.11
+UVDIF,Công nghệ và thông tin,3.04
+UVDIF,Vận tải - Kho bãi,2.14
+UVDIF,Thiết bị điện,1.73
+UVDIF,"Sản xuất Thiết bị, máy móc",1.34
+UVDIF,Tiện ích,1.28
+UVDIF,Sản xuất Hàng gia dụng,1.13
+UVDIF,Bán lẻ,0.98
+UVDIF,Xây dựng,0.96
+UVDIF,Sản xuất Phụ trợ,0.94
+TCGF,Ngân hàng,31.42
+TCGF,Vật liệu xây dựng,7.5
+TCGF,Tiện ích,5.88
+TCGF,Thực phẩm - Đồ uống,4.45
+TCGF,Chứng khoán,3.58
+TCGF,Sản xuất Nhựa - Hóa chất,3.25
+TCGF,Vận tải - Kho bãi,3.14
+TCGF,"Sản xuất Thiết bị, máy móc",2.26
+TCGF,Xây dựng,2.03
+TCGF,Sản xuất Phụ trợ,1.56
+TCGF,Bất động sản,1.48
+TCGF,Bảo hiểm,1.2
+LHCDF,Ngân hàng,26.55
+LHCDF,Bất động sản,14.22
+LHCDF,Chăm sóc sức khỏe,9.1
+LHCDF,Thực phẩm - Đồ uống,8.9
+LHCDF,Vật liệu xây dựng,6.04
+LHCDF,Vận tải - Kho bãi,4.36
+LHCDF,Tiện ích,3.98
+LHCDF,Bán lẻ,3.95
+LHCDF,Sản xuất Nhựa - Hóa chất,3.62
+LHCDF,Sản xuất Hàng gia dụng,3.59
+LHCDF,Sản xuất Phụ trợ,3.34
+LHCDF,Xây dựng,2.72
+LHCDF,"Sản xuất Thiết bị, máy móc",1.65
+LHCDF,Sản xuất,0.96
+LHCDF,Khai khoáng,0.38
+VCAMDF,Vận tải - Kho bãi,14.83
+VCAMDF,Bất động sản,12.57
+VCAMDF,Ngân hàng,8.17
+VCAMDF,Dịch vụ viễn thông,7.22
+VCAMDF,Thực phẩm - Đồ uống,4.71
+VCAMDF,Bán buôn,4.7
+VCAMDF,Chứng khoán,3.81
+VCAMDF,Tiện ích,3.13
+VCAMDF,Thiết bị điện,1.47
+VCAMDF,Công nghệ và thông tin,0.72
+MDI,Ngân hàng,27.94
+MDI,Vật liệu xây dựng,4.88
+MDI,Công nghệ và thông tin,4.47
+MDI,Bất động sản,4.0
+MDI,Chứng khoán,3.73
+MDI,Tiện ích,3.11
+MDI,Vận tải - Kho bãi,2.38
+MDI,Bán lẻ,2.0
+MDI,Sản xuất Phụ trợ,1.98
+MDI,Sản xuất Nhựa - Hóa chất,1.74
+MDI,Thực phẩm - Đồ uống,1.72
+MDI,Xây dựng,1.39
+MDI,Khai khoáng,1.12
+MDI,Thiết bị điện,0.97
+MDI,Chế biến thủy sản,0.64
+GFM-VIF,Ngân hàng,37.44
+GFM-VIF,Bất động sản,9.38
+GFM-VIF,Sản xuất Phụ trợ,8.69
+GFM-VIF,Thiết bị điện,7.31
+GFM-VIF,Thực phẩm - Đồ uống,6.89
+GFM-VIF,Bán buôn,5.8
+GFM-VIF,Xây dựng,3.47
+GFM-VIF,Sản xuất Hàng gia dụng,3.36
+GFM-VIF,Sản xuất Nhựa - Hóa chất,2.76
+GFM-VIF,Bảo hiểm,2.57
+GFM-VIF,Chứng khoán,2.53
+GFM-VIF,Vật liệu xây dựng,2.47
+GFM-VIF,Tiện ích,2.41
+GFM-VIF,Bán lẻ,2.41
+GFM-VIF,Công nghệ và thông tin,1.94
+GFM-VIF,Vận tải - Kho bãi,0.01
+VDEF,Ngân hàng,25.45
+VDEF,Bất động sản,17.32
+VDEF,Sản xuất Nhựa - Hóa chất,12.24
+VDEF,Bảo hiểm,10.67
+VDEF,Thực phẩm - Đồ uống,4.2
+VDEF,Tiện ích,3.57
+VDEF,Bán buôn,3.45
+VDEF,Xây dựng,3.4
+VDEF,"Sản xuất Thiết bị, máy móc",3.39
+VDEF,Vận tải - Kho bãi,3.38
+VDEF,Chăm sóc sức khỏe,3.22
+VDEF,Công nghệ và thông tin,2.83
+VDEF,Vật liệu xây dựng,2.65
+UVEEF,Ngân hàng,44.02
+UVEEF,Công nghệ và thông tin,7.44
+UVEEF,Vận tải - Kho bãi,5.17
+UVEEF,Thiết bị điện,4.1
+UVEEF,Tiện ích,3.77
+UVEEF,Chứng khoán,3.42
+UVEEF,Sản xuất Nhựa - Hóa chất,3.29
+UVEEF,Sản xuất Phụ trợ,3.15
+UVEEF,Bán lẻ,2.94
+UVEEF,Chế biến thủy sản,2.33
+UVEEF,Sản xuất Hàng gia dụng,2.09
+UVEEF,Xây dựng,2.01
+UVEEF,Bất động sản,1.91
+UVEEF,Vật liệu xây dựng,1.9
+UVEEF,Thực phẩm - Đồ uống,1.2
+VMEEF,Ngân hàng,39.69
+VMEEF,Công nghệ và thông tin,7.49
+VMEEF,Tiện ích,6.96
+VMEEF,Bảo hiểm,5.87
+VMEEF,Vận tải - Kho bãi,5.77
+VMEEF,Bán lẻ,4.07
+VMEEF,Vật liệu xây dựng,2.98
+VMEEF,Chứng khoán,2.94
+VMEEF,Sản xuất Phụ trợ,2.89
+VMEEF,Thiết bị điện,2.87
+VMEEF,Sản xuất Nhựa - Hóa chất,2.82
+VMEEF,Bất động sản,2.4
+VMEEF,Thực phẩm - Đồ uống,2.31
+VMEEF,Khai khoáng,1.93
+VMEEF,Chăm sóc sức khỏe,1.73
+VMEEF,Dịch vụ viễn thông,1.03
+PHVSF,Ngân hàng,37.47
+PHVSF,Bất động sản,9.24
+PHVSF,Tiện ích,8.48
+PHVSF,Thực phẩm - Đồ uống,7.3
+PHVSF,Vật liệu xây dựng,4.2
+PHVSF,Công nghệ và thông tin,4.07
+PHVSF,Sản xuất Nhựa - Hóa chất,2.85
+PHVSF,Thiết bị điện,2.41
+PHVSF,Bảo hiểm,1.94
+PHVSF,Bán lẻ,1.84
+PHVSF,Vận tải - Kho bãi,1.84
+PHVSF,"Dịch vụ tư vấn, hỗ trợ",1.46
+PHVSF,Chăm sóc sức khỏe,1.16
+PHVSF,Chứng khoán,1.05
+PHVSF,Khai khoáng,0.73
+PHVSF,Xây dựng,0.43
+PBIF,Bất động sản,19.83
+PBIF,Thực phẩm - Đồ uống,17.59
+PBIF,Ngân hàng,11.45
+PBIF,Vận tải - Kho bãi,9.8
+PBIF,Xây dựng,7.23
+PBIF,Tiện ích,6.51
+PBIF,Nông - Lâm - Ngư,4.84
+PBIF,Khai khoáng,4.37
+PBIF,Vật liệu xây dựng,4.11
+PBIF,Bán buôn,3.04
+PBIF,Sản xuất Phụ trợ,2.96
+PBIF,Sản xuất Nhựa - Hóa chất,2.47
+PBIF,Bán lẻ,1.3
+PBIF,Chế biến thủy sản,0.18
+NTPPF,Ngân hàng,21.8
+NTPPF,Công nghệ và thông tin,12.3
+NTPPF,Chứng khoán,8.3
+NTPPF,Xây dựng,5.2
+NTPPF,Sản xuất Nhựa - Hóa chất,4.7
+NTPPF,Vận tải - Kho bãi,4.7
+NTPPF,Vật liệu xây dựng,4.5
+RVPIF,Bất động sản,13.16
+RVPIF,Ngân hàng,8.25
+RVPIF,Bán buôn,3.58
+RVPIF,Bán lẻ,2.7
+RVPIF,Sản xuất Nhựa - Hóa chất,1.82
+RVPIF,Thực phẩm - Đồ uống,1.8
+RVPIF,Vận tải - Kho bãi,1.8
+RVPIF,Công nghệ và thông tin,1.8
+RVPIF,Dệt may,1.76
+RVPIF,Sản phẩm cao su,0.93
+VCBF-AIF,Ngân hàng,27.29
+VCBF-AIF,Công nghệ và thông tin,8.6
+VCBF-AIF,Thực phẩm - Đồ uống,8.54
+VCBF-AIF,Sản xuất Phụ trợ,7.61
+VCBF-AIF,Bất động sản,6.38
+VCBF-AIF,Tiện ích,5.75
+VCBF-AIF,Vật liệu xây dựng,5.21
+VCBF-AIF,Bảo hiểm,4.77
+VCBF-AIF,Vận tải - Kho bãi,3.94
+VCBF-AIF,Bán lẻ,3.69
+VCBF-AIF,Sản xuất Nhựa - Hóa chất,2.85
+VCBF-AIF,Chứng khoán,1.94
+VCBF-AIF,Chăm sóc sức khỏe,1.91
+VCBF-AIF,Khai khoáng,1.85
+VCBF-AIF,Xây dựng,0.93
