@@ -1,3 +1,4 @@
+from time import sleep
 import streamlit as st
 import pandas as pd
 import plotly.express as px
@@ -6,6 +7,7 @@ from google.genai import types
 import numpy as np
 import os
 import json
+import base64  # thêm
 
 st.set_page_config(page_title="Trợ lý AI", layout="wide")
 
@@ -675,6 +677,21 @@ except Exception as e:
     st.error(f"🚨 Đã xảy ra lỗi không mong muốn khi tải dữ liệu: {e}")
     st.stop()
 
+# --- Chart Analysis System Prompt ---
+CHART_ANALYSIS_PROMPT = """
+Bạn là một trợ lý AI chuyên phân tích biểu đồ. Dưới đây là thông tin biểu đồ:
+- Hàm đã gọi: {function_name}
+- Tham số: {function_args}
+Bạn sẽ nhận biểu đồ dưới dạng hình ảnh PNG base64.
+Hãy phân tích biểu đồ này, nêu ra các xu hướng, bất thường, và gợi ý ý nghĩa của nó.
+**Trả lời bằng tiếng Việt.**
+
+- Biểu đồ được sinh = ai với system prompt như sau, bạn hãy tham khảo để hiểu hơn về dataset:
+```
+{system_prompt}
+```
+"""
+
 # --- Main AI Interaction Area ---
 if client and flat_dfs:
     st.success(f"Sẵn sàng nhận câu hỏi về {len(flat_dfs)} bộ dữ liệu giáo dục.")
@@ -793,7 +810,10 @@ Hướng dẫn:
         f"Hỏi về dữ liệu giáo dục...", key="ai_query_input_final"
     )
 
+    chat_msg = None
     if user_query:
+        st.session_state["last_call_info"] = None
+
         st.session_state.chat_history.append(
             types.Content(role="user", parts=[types.Part(text=user_query)])
         )
@@ -829,95 +849,180 @@ Hướng dẫn:
                 response_content = response.candidates[0].content
                 st.session_state.chat_history.append(response_content)
 
-                with st.chat_message("model"):
-                    response_part = response_content.parts[0]
+                chat_msg = st.chat_message("ai")
 
-                    if response_part.function_call:
-                        function_call = response_part.function_call
-                        function_name = function_call.name
-                        function_args = {
-                            key: value for key, value in function_call.args.items()
+                response_part = response_content.parts[0]
+
+                if response_part.function_call:
+                    function_call = response_part.function_call
+                    function_name = function_call.name
+                    function_args = {
+                        key: value for key, value in function_call.args.items()
+                    }
+
+                    # st.markdown(
+                    #     f"_AI muốn chạy `{function_name}` với các tham số: `{function_args}`_"
+                    # )
+
+                    dataframe_name = function_args.get("dataframe_name")
+                    if not dataframe_name:
+                        chat_msg.error(
+                            "Lỗi: AI không chỉ định `dataframe_name` để sử dụng."
+                        )
+                    elif dataframe_name not in flat_dfs:
+                        chat_msg.error(
+                            f"Lỗi: AI yêu cầu một bộ dữ liệu không tồn tại: '{dataframe_name}'. Các bộ dữ liệu có sẵn: {list(flat_dfs.keys())}"
+                        )
+                    elif function_name in AVAILABLE_FUNCTIONS:
+                        df_to_analyze = flat_dfs[dataframe_name]
+                        chart_function = AVAILABLE_FUNCTIONS[function_name]
+
+                        plot_function_args = function_args.copy()
+                        del plot_function_args["dataframe_name"]
+
+                        function_args_with_df = {
+                            "df": df_to_analyze,
+                            **plot_function_args,
                         }
 
-                        st.markdown(
-                            f"_AI muốn chạy `{function_name}` với các tham số: `{function_args}`_"
-                        )
+                        required_cols = []
+                        if "column_name" in plot_function_args:
+                            required_cols.append(plot_function_args["column_name"])
+                        if "x_column" in plot_function_args:
+                            required_cols.append(plot_function_args["x_column"])
+                        if "y_column" in plot_function_args:
+                            required_cols.append(plot_function_args["y_column"])
+                        if (
+                            "group_by_column" in plot_function_args
+                            and plot_function_args["group_by_column"]
+                            and plot_function_args["group_by_column"] != "None"
+                        ):
+                            required_cols.append(plot_function_args["group_by_column"])
 
-                        dataframe_name = function_args.get("dataframe_name")
-                        if not dataframe_name:
-                            st.error(
-                                "Lỗi: AI không chỉ định `dataframe_name` để sử dụng."
+                        missing_cols = [
+                            col
+                            for col in required_cols
+                            if col not in df_to_analyze.columns
+                        ]
+
+                        if missing_cols:
+                            chat_msg.error(
+                                f"Lỗi: AI yêu cầu sử dụng cột không tồn tại ({', '.join(missing_cols)}) trong bộ dữ liệu '{dataframe_name}'. Các cột có sẵn: {df_to_analyze.columns.tolist()}"
                             )
-                        elif dataframe_name not in flat_dfs:
-                            st.error(
-                                f"Lỗi: AI yêu cầu một bộ dữ liệu không tồn tại: '{dataframe_name}'. Các bộ dữ liệu có sẵn: {list(flat_dfs.keys())}"
-                            )
-                        elif function_name in AVAILABLE_FUNCTIONS:
-                            df_to_analyze = flat_dfs[dataframe_name]
-                            chart_function = AVAILABLE_FUNCTIONS[function_name]
-
-                            plot_function_args = function_args.copy()
-                            del plot_function_args["dataframe_name"]
-
-                            function_args_with_df = {
-                                "df": df_to_analyze,
-                                **plot_function_args,
-                            }
-
-                            required_cols = []
-                            if "column_name" in plot_function_args:
-                                required_cols.append(plot_function_args["column_name"])
-                            if "x_column" in plot_function_args:
-                                required_cols.append(plot_function_args["x_column"])
-                            if "y_column" in plot_function_args:
-                                required_cols.append(plot_function_args["y_column"])
-                            if (
-                                "group_by_column" in plot_function_args
-                                and plot_function_args["group_by_column"]
-                                and plot_function_args["group_by_column"] != "None"
-                            ):
-                                required_cols.append(
-                                    plot_function_args["group_by_column"]
-                                )
-
-                            missing_cols = [
-                                col
-                                for col in required_cols
-                                if col not in df_to_analyze.columns
-                            ]
-
-                            if missing_cols:
-                                st.error(
-                                    f"Lỗi: AI yêu cầu sử dụng cột không tồn tại ({', '.join(missing_cols)}) trong bộ dữ liệu '{dataframe_name}'. Các cột có sẵn: {df_to_analyze.columns.tolist()}"
-                                )
-                            else:
-                                fig = chart_function(**function_args_with_df)
-
-                                if fig:
-                                    st.plotly_chart(fig, use_container_width=True)
-                                    st.markdown(
-                                        f"OK. Đây là `{function_name.replace('_', ' ')}` bạn yêu cầu cho bộ dữ liệu '{dataframe_name}'."
-                                    )
-                                else:
-                                    error_message = f"Không thể tạo biểu đồ được yêu cầu (`{function_name}`) cho bộ dữ liệu '{dataframe_name}'. Vui lòng kiểm tra lại yêu cầu hoặc các thông báo lỗi bên trên."
-                                    st.error(error_message)
                         else:
-                            error_message = f"Lỗi: AI yêu cầu một hàm không xác định '{function_name}'."
-                            st.error(error_message)
+                            # fig = chart_function(**function_args_with_df)
 
-                    elif response_part.text:
-                        response_text = response_part.text
-                        st.markdown(response_text)
+                            # if fig:
+                            # hiện chart
+                            # st.plotly_chart(fig, use_container_width=True)
+                            # lưu fig và thông tin để phân tích
+                            # st.session_state["last_fig"] = function_args_with_df
+                            st.session_state["last_call_info"] = dict(
+                                # chart_function=function_name,
+                                chart_args=plot_function_args,
+                                function_name=function_name,
+                                function_args=function_args,
+                                dataframe_name=dataframe_name,
+                                user_query=user_query,
+                            )
+                            st.session_state["need_layout"] = False
+                            st.rerun()
+
+                            # st.session_state["need_layout"] = False
+                            # st.session_state.pop("chart_analysis_result", None)
+                            # st.markdown(
+                            #     f"OK. Đây là `{function_name.replace('_', ' ')}` bạn yêu cầu cho bộ dữ liệu '{dataframe_name}'."
+                            # )
+                        # else:
+                        #     error_message = f"Không thể tạo biểu đồ được yêu cầu (`{function_name}`) cho bộ dữ liệu '{dataframe_name}'. Vui lòng kiểm tra lại yêu cầu hoặc các thông báo lỗi bên trên."
+                        #     chat_msg.error(error_message)
                     else:
-                        st.warning("AI trả về một phản hồi trống.")
+                        error_message = (
+                            f"Lỗi: AI yêu cầu một hàm không xác định '{function_name}'."
+                        )
+                        chat_msg.error(error_message)
+
+                elif response_part.text:
+                    response_text = response_part.text
+                    chat_msg.markdown(response_text)
+                else:
+                    chat_msg.warning("AI trả về một phản hồi trống.")
 
         except Exception as e:
             st.error(f"Đã xảy ra lỗi trong quá trình tương tác với AI: {e}", icon="🔥")
+
+    # After chat and chart rendering, add analyze button + result
+    if (
+        "last_call_info" in st.session_state
+        and st.session_state["last_call_info"] is not None
+    ):
+        # Always show the chart before the button and analysis result
+        sleep(1)  # Optional: Add a small delay for better UX
+
+        info = st.session_state["last_call_info"]
+
+        # if st.session_state["need_layout"] == True:
+        userMsg = st.chat_message("user")
+        userMsg.markdown(info["user_query"])
+
+        # st.session_state["need_layout"] = True
+
+        with st.chat_message("ai"):
+            st.markdown(
+                f"_AI muốn chạy `{info["function_name"]}` với các tham số: `{info["function_args"]}`_"
+            )
+
+            fig = AVAILABLE_FUNCTIONS[info["function_name"]](
+                flat_dfs[info["dataframe_name"]], **info["chart_args"]
+            )
+            if fig:
+                st.plotly_chart(fig, use_container_width=True)
+
+                st.markdown(
+                    f"OK. Đây là biểu đồ bạn yêu cầu sử dụng bộ dữ liệu '{info["dataframe_name"]}'."
+                )
+
+                if st.button("🔍 Phân tích"):
+                    # fig = st.session_state["last_fig"]
+                    # info = st.session_state["last_call_info"]
+                    img_bytes = fig.to_image(format="png")
+                    with st.spinner("🤖 Đang phân tích biểu đồ..."):
+                        resp = client.models.generate_content(
+                            model="gemini-2.0-flash",
+                            contents=[
+                                types.Content(
+                                    role="user",
+                                    parts=[
+                                        types.Part.from_bytes(
+                                            mime_type="image/png", data=img_bytes
+                                        )
+                                    ],
+                                ),
+                            ],
+                            config=types.GenerateContentConfig(
+                                system_instruction=CHART_ANALYSIS_PROMPT.format(
+                                    function_name=info["function_name"],
+                                    function_args=info["function_args"],
+                                    system_prompt=SYSTEM_PROMPT,
+                                )
+                            ),
+                        )
+                    result = resp.candidates[0].content.parts[0].text
+                    # st.session_state["chart_analysis_result"] = result
+
+                    # if "chart_analysis_result" in st.session_state:
+                    st.write("**📈 Phân tích biểu đồ:**")
+                    st.markdown(result)
+            else:
+                error_message = f"Không thể tạo biểu đồ được yêu cầu (`{function_name}`) cho bộ dữ liệu '{dataframe_name}'. Vui lòng kiểm tra lại yêu cầu hoặc các thông báo lỗi bên trên."
+                st.error(error_message)
 
     st.write("---")
     if st.session_state.get("chat_history"):
         if st.button("Xóa lịch sử trò chuyện", key="ai_clear_history_final"):
             st.session_state["chat_history"] = []
+            # st.session_state["last_fig"] = None
+            st.session_state["last_call_info"] = None
             st.rerun()
 
 elif not client:
