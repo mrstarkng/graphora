@@ -685,6 +685,79 @@ if client and flat_dfs:
         "Ví dụ: 'Tạo biểu đồ tần suất cho cột [tên cột] trong dữ liệu [tên bộ dữ liệu]', 'So sánh [cột 1] và [cột 2] từ [tên bộ dữ liệu]', 'Dữ liệu nào nói về chỉ số phát triển?'"
     )
 
+    # --- List of Provinces ---
+    provinces = [
+        "An Giang",
+        "Bà Rịa - Vũng Tàu",
+        "Bắc Giang",
+        "Bắc Kạn",
+        "Bạc Liêu",
+        "Bắc Ninh",
+        "Bến Tre",
+        "Bình Định",
+        "Bình Dương",
+        "Bình Phước",
+        "Bình Thuận",
+        "Cà Mau",
+        "Cần Thơ",
+        "Cao Bằng",
+        "Đà Nẵng",
+        "Đắk Lắk",
+        "Đắk Nông",
+        "Điện Biên",
+        "Đồng Nai",
+        "Đồng Tháp",
+        "Gia Lai",
+        "Hà Giang",
+        "Hà Nam",
+        "Hà Nội",
+        "Hà Tĩnh",
+        "Hải Dương",
+        "Hải Phòng",
+        "Hậu Giang",
+        "Hòa Bình",
+        "Hưng Yên",
+        "Khánh Hòa",
+        "Kiên Giang",
+        "Kon Tum",
+        "Lai Châu",
+        "Lâm Đồng",
+        "Lạng Sơn",
+        "Lào Cai",
+        "Long An",
+        "Nam Định",
+        "Nghệ An",
+        "Ninh Bình",
+        "Ninh Thuận",
+        "Phú Thọ",
+        "Phú Yên",
+        "Quảng Bình",
+        "Quảng Nam",
+        "Quảng Ngãi",
+        "Quảng Ninh",
+        "Quảng Trị",
+        "Sóc Trăng",
+        "Sơn La",
+        "Tây Ninh",
+        "Thái Bình",
+        "Thái Nguyên",
+        "Thanh Hóa",
+        "Thừa Thiên Huế",
+        "Tiền Giang",
+        "Trà Vinh",
+        "Tuyên Quang",
+        "Vĩnh Long",
+        "Vĩnh Phúc",
+        "Yên Bái",
+        "TP.Hồ Chí Minh",
+    ]
+    provinces_list_str = (
+        "Danh sách các giá trị 'Địa phương' có thể có (tỉnh/thành phố):\n"
+        + ", ".join([f"'{p}'" for p in provinces])
+        + "\n"
+    )
+    # --- End List of Provinces ---
+
     SYSTEM_PROMPT = f"""
 Đây là mô tả ứng dụng của tôi:
 "Graphora là một nền tảng trực quan hóa dữ liệu giáo dục được thiết kế nhằm phục vụ cho mục tiêu **phân tích và đánh giá toàn diện tình hình giáo dục tại Việt Nam"    
@@ -693,7 +766,7 @@ Mục tiêu của bạn là giúp người dùng hiểu dữ liệu của họ b
 **Hãy trả lời bằng tiếng Việt.**
 
 {datasets_overview}
-
+{provinces_list_str}
 Hướng dẫn:
 - Phân tích yêu cầu của người dùng một cách cẩn thận.
 - **Xác định bộ dữ liệu (dataframe) phù hợp nhất** từ danh sách trên dựa trên câu hỏi, mô tả, danh sách cột, kiểu dữ liệu và dữ liệu mẫu (f5r) của từng bộ dữ liệu. Nếu không rõ ràng, hãy hỏi người dùng muốn sử dụng bộ dữ liệu nào.
@@ -701,6 +774,7 @@ Hướng dẫn:
     - Định dạng JSON: `'{{"tên_cột_1": "giá_trị", "tên_cột_2": ["giá_trị_1", "giá_trị_2"]}}'`
     - Ví dụ: Để lọc dữ liệu 'Địa phương - Tiểu học' chỉ cho 'Hà Nội' năm 2021, dùng: `filters_json='{{"Địa phương": "Hà Nội", "Năm": 2021}}'`
     - Ví dụ: Để lọc cho 'Hà Nội' và 'TP. Hồ Chí Minh', dùng: `filters_json='{{"Địa phương": ["Hà Nội", "TP. Hồ Chí Minh"]}}'`
+    - Khi lọc theo 'Địa phương', hãy sử dụng tên chính xác từ danh sách được cung cấp ở trên.
     - Nếu không cần lọc, bỏ qua tham số `filters_json` hoặc đặt là `None`.
 - Khi gọi một hàm công cụ (ví dụ: `generate_histogram`), **bạn BẮT BUỘC phải cung cấp tham số `dataframe_name`** với tên chính xác của bộ dữ liệu bạn đã chọn từ danh sách trên.
 - Đảm bảo bạn sử dụng tên cột CHÍNH XÁC như được liệt kê cho bộ dữ liệu đã chọn, chú ý đến kiểu dữ liệu của cột khi chọn công cụ phù hợp. Không tự tạo tên cột.
