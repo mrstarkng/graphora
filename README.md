@@ -45,10 +45,7 @@ graphora/
 │   └── 4_AI_Assistant.py
 │
 ├── data/                    # Dữ liệu nguồn chính
-├── data_1/                  # Dữ liệu bổ sung (cần làm rõ chức năng)
-│
-├── utils/                   # Các hàm tiện ích dùng chung (reusable functions)
-├── assets/                  # Tài nguyên tĩnh (ảnh, logo, CSS, v.v.)
+├── data_1/                  # Dữ liệu bổ sung 
 │
 ├── .streamlit/              # Cấu hình giao diện và menu cho Streamlit
 ├── .github/                 # Cấu hình CI/CD với GitHub Actions
