@@ -1,4 +1,5 @@
 import streamlit as st
+import streamlit.components.v1 as stc
 
 # Các thư viện phụ
 import pandas as pd
@@ -9,8 +10,36 @@ import plotly.figure_factory as ff
 st.set_page_config(page_title="📊 Dashboard Giáo dục", layout="wide")
 st.title("DASHBOARD")
 
+if "show_powerbi" not in st.session_state:
+    st.session_state["show_powerbi"] = True
+
+
+show_powerbi = st.toggle(
+    "🔄 Sử dụng PowerBi",
+    st.session_state["show_powerbi"],
+    # on_change=toggle_powerbi,
+)
+
+
+if show_powerbi:
+    st.markdown(
+        """
+        <div style="display: flex; justify-content: center;align-items: center; height:70vh">
+            <iframe title="dashboard" style="height:100%; width:100%;" src="https://app.powerbi.com/reportEmbed?reportId=c926cdbb-977b-49eb-bd80-b377e829001e&autoAuth=true&ctid=40127cd4-45f3-49a3-b05d-315a43a9f033" frameborder="0" allowFullScreen="true"></iframe>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+    # stc.iframe(
+    #     "https://app.powerbi.com/reportEmbed?reportId=c926cdbb-977b-49eb-bd80-b377e829001e&autoAuth=true&ctid=40127cd4-45f3-49a3-b05d-315a43a9f033",
+    #     None,
+    #     700,
+    # )
+    st.stop()
+
 # Tabs chính
 tabs = st.tabs(["📘 Tổng quan", "🏫 Tiểu học", "📚 THCS", "🎓 THPT", "👶 Mẫu giáo"])
+
 
 # Load dữ liệu chung
 @st.cache_data
@@ -25,6 +54,7 @@ def load_data():
         "mau_giao": pd.read_csv("data/mau-giao/MG.csv"),
         "mau_giao_tq": pd.read_csv("data/mau-giao/tong-quan-MG.csv"),
     }
+
 
 data = load_data()
 
@@ -91,7 +121,7 @@ coords_data = [
     {"Địa phương": "Vĩnh Long", "Lat": 10.253, "Lon": 105.973},
     {"Địa phương": "Vĩnh Phúc", "Lat": 21.308, "Lon": 105.604},
     {"Địa phương": "Yên Bái", "Lat": 21.704, "Lon": 104.887},
-    {"Địa phương": "TP.Hồ Chí Minh", "Lat": 10.7626, "Lon": 106.6602}
+    {"Địa phương": "TP.Hồ Chí Minh", "Lat": 10.7626, "Lon": 106.6602},
 ]
 
 with tabs[0]:
@@ -104,9 +134,19 @@ with tabs[0]:
     # ========== Bộ lọc ==========
     col_start, col_end = st.columns(2)
     with col_start:
-        start_year = st.number_input("Năm bắt đầu", min_value=int(df["Năm học"].min()), max_value=int(df["Năm học"].max()), value=2004)
+        start_year = st.number_input(
+            "Năm bắt đầu",
+            min_value=int(df["Năm học"].min()),
+            max_value=int(df["Năm học"].max()),
+            value=2004,
+        )
     with col_end:
-        end_year = st.number_input("Năm kết thúc", min_value=int(df["Năm học"].min()), max_value=int(df["Năm học"].max()), value=2021)
+        end_year = st.number_input(
+            "Năm kết thúc",
+            min_value=int(df["Năm học"].min()),
+            max_value=int(df["Năm học"].max()),
+            value=2021,
+        )
 
     if start_year > end_year:
         st.error("❌ Năm bắt đầu phải nhỏ hơn hoặc bằng năm kết thúc.")
@@ -116,7 +156,7 @@ with tabs[0]:
     custom_color = {
         "Tiểu học": "lightgreen",
         "Trung học cơ sở": "orange",
-        "Trung học phổ thông": "crimson"
+        "Trung học phổ thông": "crimson",
     }
 
     # ========== Thống kê KPIs năm mới nhất ==========
@@ -134,7 +174,9 @@ with tabs[0]:
         st.subheader("📈 Biểu đồ thay đổi số lượng theo năm")
 
         all_metrics = ["Trường", "Lớp (nghìn)", "Giáo viên (nghìn)", "Học sinh (nghìn)"]
-        selected_metrics = st.multiselect("📌 Chọn chỉ số cần hiển thị:", all_metrics, default=all_metrics)
+        selected_metrics = st.multiselect(
+            "📌 Chọn chỉ số cần hiển thị:", all_metrics, default=all_metrics
+        )
 
         df_line = df_tong[df_tong["Cấp học"] == "Tổng số"].copy()
         df_line["Năm học"] = pd.to_numeric(df_line["Năm học"], errors="coerce")
@@ -144,13 +186,13 @@ with tabs[0]:
             "Trường": "#e6c910",
             "Lớp (nghìn)": "#e69b10",
             "Giáo viên (nghìn)": "#d65875",
-            "Học sinh (nghìn)": "#8088d1"
+            "Học sinh (nghìn)": "#8088d1",
         }
 
         if selected_metrics:
             # Chia đều các biểu đồ theo hàng ngang 2 cột
             for i in range(0, len(selected_metrics), 2):
-                row_metrics = selected_metrics[i:i+2]
+                row_metrics = selected_metrics[i : i + 2]
                 cols = st.columns(len(row_metrics))
                 for idx, metric in enumerate(row_metrics):
                     fig_single = px.line(
@@ -159,12 +201,10 @@ with tabs[0]:
                         y=metric,
                         title=f"📊 {metric}",
                         markers=True,
-                        color_discrete_sequence=[color_map.get(metric, "#636EFA")]
+                        color_discrete_sequence=[color_map.get(metric, "#636EFA")],
                     )
                     fig_single.update_layout(
-                        yaxis_title="Số lượng",
-                        xaxis_title="Năm học",
-                        height=300
+                        yaxis_title="Số lượng", xaxis_title="Năm học", height=300
                     )
                     with cols[idx]:
                         st.plotly_chart(fig_single, use_container_width=True)
@@ -173,17 +213,25 @@ with tabs[0]:
 
     # ========== Biểu đồ Pie theo cấp học ==========
     st.subheader("📌 Tỷ lệ trường và học sinh theo cấp học")
-    cap_ratio = latest_df.groupby("Cấp học")[["Học sinh (nghìn)", "Trường"]].sum().reset_index()
+    cap_ratio = (
+        latest_df.groupby("Cấp học")[["Học sinh (nghìn)", "Trường"]].sum().reset_index()
+    )
     pie1, pie2 = st.columns(2, gap="large")
     fig_pie_school = px.pie(
-        cap_ratio, names="Cấp học", values="Trường",
+        cap_ratio,
+        names="Cấp học",
+        values="Trường",
         title="🎯 Tỷ lệ trường theo cấp",
-        color="Cấp học", color_discrete_map=custom_color
+        color="Cấp học",
+        color_discrete_map=custom_color,
     )
     fig_pie_student = px.pie(
-        cap_ratio, names="Cấp học", values="Học sinh (nghìn)",
+        cap_ratio,
+        names="Cấp học",
+        values="Học sinh (nghìn)",
         title="👥 Tỷ lệ học sinh theo cấp",
-        color="Cấp học", color_discrete_map=custom_color
+        color="Cấp học",
+        color_discrete_map=custom_color,
     )
     with pie1:
         st.plotly_chart(fig_pie_school, use_container_width=True)
@@ -198,18 +246,30 @@ with tabs[0]:
     # Tỷ lệ giới tính
     df["Học sinh nam"] = df["Học sinh (nghìn)"] - df["Học sinh nữ (nghìn)"]
     gender_df = df[df["Năm học"].between(start_year, end_year)]
-    gender_sum = gender_df.groupby("Năm học")[["Học sinh nữ (nghìn)", "Học sinh nam"]].sum().reset_index()
+    gender_sum = (
+        gender_df.groupby("Năm học")[["Học sinh nữ (nghìn)", "Học sinh nam"]]
+        .sum()
+        .reset_index()
+    )
     gender_sum["Tổng"] = gender_sum["Học sinh nữ (nghìn)"] + gender_sum["Học sinh nam"]
     gender_sum["% Nam"] = gender_sum["Học sinh nam"] / gender_sum["Tổng"] * 100
     gender_sum["% Nữ"] = gender_sum["Học sinh nữ (nghìn)"] / gender_sum["Tổng"] * 100
 
-    df_stacked = gender_sum[["Năm học", "% Nam", "% Nữ"]].rename(columns={"% Nam": "Nam", "% Nữ": "Nữ"})
-    df_stacked = df_stacked.melt(id_vars="Năm học", var_name="Giới tính", value_name="Tỷ lệ (%)")
+    df_stacked = gender_sum[["Năm học", "% Nam", "% Nữ"]].rename(
+        columns={"% Nam": "Nam", "% Nữ": "Nữ"}
+    )
+    df_stacked = df_stacked.melt(
+        id_vars="Năm học", var_name="Giới tính", value_name="Tỷ lệ (%)"
+    )
 
     fig_gender = px.bar(
-        df_stacked, x="Năm học", y="Tỷ lệ (%)", color="Giới tính",
+        df_stacked,
+        x="Năm học",
+        y="Tỷ lệ (%)",
+        color="Giới tính",
         color_discrete_map={"Nam": "deepskyblue", "Nữ": "pink"},
-        text="Tỷ lệ (%)", title="Tỷ lệ học sinh nam và nữ theo năm"
+        text="Tỷ lệ (%)",
+        title="Tỷ lệ học sinh nam và nữ theo năm",
     )
     fig_gender.update_layout(barmode="stack", yaxis_range=[0, 100])
     fig_gender.update_traces(texttemplate="%{text:.1f}%", textposition="inside")
@@ -232,13 +292,11 @@ with tabs[0]:
         color_discrete_map={
             "Tiểu học": "lightgreen",
             "Trung học cơ sở": "orange",
-            "Trung học phổ thông": "crimson"
-        }
+            "Trung học phổ thông": "crimson",
+        },
     )
     fig_hs_lop.update_layout(
-        yaxis_title="Học sinh / lớp",
-        xaxis=dict(dtick=1),
-        legend_title="Cấp học"
+        yaxis_title="Học sinh / lớp", xaxis=dict(dtick=1), legend_title="Cấp học"
     )
 
     with col_classsize:
@@ -261,11 +319,7 @@ with tabs[0]:
         z = [z]
         text_matrix = [text_matrix.tolist()]
 
-    colorscale = [
-        [0.0, "red"],
-        [0.5, "white"],
-        [1.0, "limegreen"]
-    ]
+    colorscale = [[0.0, "red"], [0.5, "white"], [1.0, "limegreen"]]
 
     max_abs_change = max(abs(df_delta.max().max()), abs(df_delta.min().min()))
 
@@ -275,20 +329,20 @@ with tabs[0]:
         y=df_delta.index.astype(str).tolist(),
         annotation_text=text_matrix.values,
         colorscale=[  # Màu đỏ - trắng - xanh
-            [0.0, "red"],     # Giảm mạnh nhất
-            [0.5, "white"],   # Không thay đổi
-            [1.0, "green"]    # Tăng mạnh nhất
+            [0.0, "red"],  # Giảm mạnh nhất
+            [0.5, "white"],  # Không thay đổi
+            [1.0, "green"],  # Tăng mạnh nhất
         ],
         showscale=True,
         zmin=-max_abs_change,
-        zmax=max_abs_change
+        zmax=max_abs_change,
     )
 
     fig_matrix.update_layout(
         xaxis_title="Chỉ số",
         yaxis_title="Năm học",
         margin=dict(l=50, r=20, t=50, b=50),
-        title="📉 Biến động (%) so với năm trước"
+        title="📉 Biến động (%) so với năm trước",
     )
 
     st.plotly_chart(fig_matrix, use_container_width=True)
@@ -298,7 +352,7 @@ with tabs[1]:
 
     # ======= 1. Bộ lọc tương tác =======
     df_th = data["tieu_hoc"].copy()
-    
+
     # Chuyển thành DataFrame
     coords_df = pd.DataFrame(coords_data)
 
@@ -310,7 +364,7 @@ with tabs[1]:
 
     col1, col2 = st.columns(2)
     with col1:
-        selected_year = st.selectbox("📅 Chọn năm học", years, index=len(years)-1)
+        selected_year = st.selectbox("📅 Chọn năm học", years, index=len(years) - 1)
     with col2:
         selected_province = st.selectbox("📍 Chọn địa phương", ["Tất cả"] + provinces)
 
@@ -325,7 +379,10 @@ with tabs[1]:
     kpi2.metric("📚 Lớp", f'{df_filtered["Lớp"].sum():,.0f}')
     kpi3.metric("👩‍🏫 Giáo viên", f'{df_filtered["Giáo viên"].sum():,.0f}')
     kpi4.metric("👦 Học sinh", f'{df_filtered["Học sinh"].sum():,.0f}')
-    kpi5.metric("🧒 HS dân tộc thiểu số", f'{df_filtered["Học sinh dân tộc thiểu số"].sum():,.0f}')
+    kpi5.metric(
+        "🧒 HS dân tộc thiểu số",
+        f'{df_filtered["Học sinh dân tộc thiểu số"].sum():,.0f}',
+    )
 
     # ======= 3. Biểu đồ line theo năm (nếu chọn 1 tỉnh) =======
     if selected_province != "Tất cả":
@@ -336,7 +393,7 @@ with tabs[1]:
             "Trường": "#e6c910",
             "Lớp": "#e69b10",
             "Giáo viên": "#d65875",
-            "Học sinh": "#8088d1"
+            "Học sinh": "#8088d1",
         }
 
         line_cols = st.columns(2)
@@ -347,12 +404,9 @@ with tabs[1]:
                 y=column,
                 markers=True,
                 title=f"{column} qua các năm",
-                color_discrete_sequence=[color_map[column]]
+                color_discrete_sequence=[color_map[column]],
             )
-            fig.update_layout(
-                xaxis_title="Năm học",
-                yaxis_title=column
-            )
+            fig.update_layout(xaxis_title="Năm học", yaxis_title=column)
             with line_cols[i % 2]:
                 st.plotly_chart(fig, use_container_width=True)
 
@@ -372,12 +426,9 @@ with tabs[1]:
             orientation="h",
             title="🏆 Top 10 địa phương có số học sinh tiểu học cao nhất",
             color="Học sinh",
-            color_continuous_scale="Blues"
+            color_continuous_scale="Blues",
         )
-        fig_bar.update_layout(
-            yaxis_title="Địa phương",
-            xaxis_title="Số học sinh"
-        )
+        fig_bar.update_layout(yaxis_title="Địa phương", xaxis_title="Số học sinh")
 
         top_school = df_filtered.sort_values("Trường", ascending=False).head(10)
         top_school = top_school.sort_values("Trường", ascending=True)
@@ -391,12 +442,9 @@ with tabs[1]:
             orientation="h",
             title="🏫 Top 10 địa phương có nhiều trường tiểu học nhất",
             color="Trường",
-            color_continuous_scale="YlOrRd"
+            color_continuous_scale="YlOrRd",
         )
-        fig_school_bar.update_layout(
-            yaxis_title="Địa phương",
-            xaxis_title="Số trường"
-        )
+        fig_school_bar.update_layout(yaxis_title="Địa phương", xaxis_title="Số trường")
 
         col_bar1, col_bar2 = st.columns(2)
         with col_bar1:
@@ -412,7 +460,7 @@ with tabs[1]:
             [0.0, "#a6cee3"],
             [0.2, "#66b2d6"],
             [0.5, "#1f78b4"],
-            [1.0, "#08306b"]
+            [1.0, "#08306b"],
         ]
 
         fig_map_students = px.scatter_mapbox(
@@ -426,7 +474,7 @@ with tabs[1]:
             zoom=4,
             mapbox_style="carto-positron",
             title="🗺️ Học sinh theo địa phương",
-            color_continuous_scale=color_scale_students
+            color_continuous_scale=color_scale_students,
         )
 
         fig_map_schools = px.scatter_mapbox(
@@ -440,7 +488,7 @@ with tabs[1]:
             size_max=20,
             zoom=4,
             mapbox_style="carto-positron",
-            title="📏 Trường học theo địa phương"
+            title="📏 Trường học theo địa phương",
         )
 
         col_map1, col_map2 = st.columns(2)
@@ -448,7 +496,7 @@ with tabs[1]:
             st.plotly_chart(fig_map_students, use_container_width=True)
         with col_map2:
             st.plotly_chart(fig_map_schools, use_container_width=True)
-    
+
     # ========== BIỂU ĐỒ TỈ LỆ GIỚI TÍNH HỌC SINH VÀ GIÁO VIÊN ==========
     st.subheader("Tỉ lệ giới tính học sinh và giáo viên")
     gender_col1, gender_col2 = st.columns(2)
@@ -458,11 +506,11 @@ with tabs[1]:
             names=["Nam", "Nữ"],
             values=[
                 df_filtered["Học sinh"].sum() - df_filtered["Học sinh nữ"].sum(),
-                df_filtered["Học sinh nữ"].sum()
+                df_filtered["Học sinh nữ"].sum(),
             ],
             hole=0.4,
             title="Tỉ lệ học sinh nam - nữ",
-            color_discrete_sequence=["deepskyblue", "pink"]
+            color_discrete_sequence=["deepskyblue", "pink"],
         )
         st.plotly_chart(fig_students, use_container_width=True)
 
@@ -471,14 +519,14 @@ with tabs[1]:
             names=["Nam", "Nữ"],
             values=[
                 df_filtered["Giáo viên"].sum() - df_filtered["Giáo viên nữ"].sum(),
-                df_filtered["Giáo viên nữ"].sum()
+                df_filtered["Giáo viên nữ"].sum(),
             ],
             hole=0.4,
             title="Tỉ lệ giáo viên nam - nữ",
-            color_discrete_sequence=["deepskyblue", "pink"]
+            color_discrete_sequence=["deepskyblue", "pink"],
         )
         st.plotly_chart(fig_teachers, use_container_width=True)
-        
+
     # ======= Biểu đồ Scatter: Tùy chọn 2 biến để xem tương quan =======
     st.subheader("📌 Mối tương quan giữa các chỉ số")
 
@@ -493,12 +541,9 @@ with tabs[1]:
         size=scatter_y,
         color="Địa phương",
         hover_name="Địa phương",
-        title=f"🎯 Tương quan giữa {scatter_x} và {scatter_y} theo địa phương"
+        title=f"🎯 Tương quan giữa {scatter_x} và {scatter_y} theo địa phương",
     )
-    fig_scatter.update_layout(
-        xaxis_title=scatter_x,
-        yaxis_title=scatter_y
-    )
+    fig_scatter.update_layout(xaxis_title=scatter_x, yaxis_title=scatter_y)
     st.plotly_chart(fig_scatter, use_container_width=True)
 
 with tabs[2]:
@@ -513,9 +558,13 @@ with tabs[2]:
 
     col1, col2 = st.columns(2)
     with col1:
-        selected_year = st.selectbox("📅 Chọn năm học", years, index=len(years)-1, key="thcs_year")
+        selected_year = st.selectbox(
+            "📅 Chọn năm học", years, index=len(years) - 1, key="thcs_year"
+        )
     with col2:
-        selected_province = st.selectbox("📍 Chọn địa phương", ["Tất cả"] + provinces, key="thcs_prov")
+        selected_province = st.selectbox(
+            "📍 Chọn địa phương", ["Tất cả"] + provinces, key="thcs_prov"
+        )
 
     df_filtered = df_thcs[df_thcs["Năm"] == selected_year]
     if selected_province != "Tất cả":
@@ -527,8 +576,11 @@ with tabs[2]:
     kpi2.metric("📚 Lớp", f'{df_filtered["Lớp"].sum():,.0f}')
     kpi3.metric("👩‍🏫 Giáo viên", f'{df_filtered["Giáo viên"].sum():,.0f}')
     kpi4.metric("👦 Học sinh", f'{df_filtered["Học sinh"].sum():,.0f}')
-    kpi5.metric("🧒 HS dân tộc thiểu số", f'{df_filtered["Học sinh dân tộc thiểu số"].sum():,.0f}')
-    
+    kpi5.metric(
+        "🧒 HS dân tộc thiểu số",
+        f'{df_filtered["Học sinh dân tộc thiểu số"].sum():,.0f}',
+    )
+
     # ======= 3. Biểu đồ line theo năm (nếu chọn 1 tỉnh) =======
     if selected_province != "Tất cả":
         df_line = df_thcs[df_thcs["Địa phương"] == selected_province]
@@ -538,7 +590,7 @@ with tabs[2]:
             "Trường": "#e6c910",
             "Lớp": "#e69b10",
             "Giáo viên": "#d65875",
-            "Học sinh": "#8088d1"
+            "Học sinh": "#8088d1",
         }
 
         line_cols = st.columns(2)
@@ -549,12 +601,9 @@ with tabs[2]:
                 y=column,
                 markers=True,
                 title=f"{column} qua các năm",
-                color_discrete_sequence=[color_map[column]]
+                color_discrete_sequence=[color_map[column]],
             )
-            fig.update_layout(
-                xaxis_title="Năm học",
-                yaxis_title=column
-            )
+            fig.update_layout(xaxis_title="Năm học", yaxis_title=column)
             with line_cols[i % 2]:
                 st.plotly_chart(fig, use_container_width=True)
 
@@ -574,12 +623,9 @@ with tabs[2]:
             orientation="h",
             title="🏆 Top 10 địa phương có số học sinh THCS cao nhất",
             color="Học sinh",
-            color_continuous_scale="Blues"
+            color_continuous_scale="Blues",
         )
-        fig_bar.update_layout(
-            yaxis_title="Địa phương",
-            xaxis_title="Số học sinh"
-        )
+        fig_bar.update_layout(yaxis_title="Địa phương", xaxis_title="Số học sinh")
 
         top_school = df_filtered.sort_values("Trường", ascending=False).head(10)
         top_school = top_school.sort_values("Trường", ascending=True)
@@ -593,12 +639,9 @@ with tabs[2]:
             orientation="h",
             title="🏫 Top 10 địa phương có nhiều trường THCS nhất",
             color="Trường",
-            color_continuous_scale="YlOrRd"
+            color_continuous_scale="YlOrRd",
         )
-        fig_school_bar.update_layout(
-            yaxis_title="Địa phương",
-            xaxis_title="Số trường"
-        )
+        fig_school_bar.update_layout(yaxis_title="Địa phương", xaxis_title="Số trường")
 
         col_bar1, col_bar2 = st.columns(2)
         with col_bar1:
@@ -614,7 +657,7 @@ with tabs[2]:
             [0.0, "#a6cee3"],
             [0.2, "#66b2d6"],
             [0.5, "#1f78b4"],
-            [1.0, "#08306b"]
+            [1.0, "#08306b"],
         ]
 
         fig_map_students = px.scatter_mapbox(
@@ -628,7 +671,7 @@ with tabs[2]:
             zoom=4,
             mapbox_style="carto-positron",
             title="🗺️ Học sinh theo địa phương",
-            color_continuous_scale=color_scale_students
+            color_continuous_scale=color_scale_students,
         )
 
         fig_map_schools = px.scatter_mapbox(
@@ -642,7 +685,7 @@ with tabs[2]:
             size_max=20,
             zoom=4,
             mapbox_style="carto-positron",
-            title="📏 Trường học theo địa phương"
+            title="📏 Trường học theo địa phương",
         )
 
         col_map1, col_map2 = st.columns(2)
@@ -650,7 +693,7 @@ with tabs[2]:
             st.plotly_chart(fig_map_students, use_container_width=True)
         with col_map2:
             st.plotly_chart(fig_map_schools, use_container_width=True)
-            
+
     # ========== BIỂU ĐỒ TỈ LỆ GIỚI TÍNH HỌC SINH VÀ GIÁO VIÊN ==========
     st.subheader("👩‍🎓👨‍🎓 Tỉ lệ giới tính học sinh và giáo viên")
     gender_col1, gender_col2 = st.columns(2)
@@ -660,11 +703,11 @@ with tabs[2]:
             names=["Nam", "Nữ"],
             values=[
                 df_filtered["Học sinh"].sum() - df_filtered["Học sinh nữ"].sum(),
-                df_filtered["Học sinh nữ"].sum()
+                df_filtered["Học sinh nữ"].sum(),
             ],
             hole=0.4,
             title="Tỉ lệ học sinh nam - nữ",
-            color_discrete_sequence=["deepskyblue", "pink"]
+            color_discrete_sequence=["deepskyblue", "pink"],
         )
         st.plotly_chart(fig_students, use_container_width=True)
 
@@ -673,18 +716,22 @@ with tabs[2]:
             names=["Nam", "Nữ"],
             values=[
                 df_filtered["Giáo viên"].sum() - df_filtered["Giáo viên nữ"].sum(),
-                df_filtered["Giáo viên nữ"].sum()
+                df_filtered["Giáo viên nữ"].sum(),
             ],
             hole=0.4,
             title="Tỉ lệ giáo viên nam - nữ",
-            color_discrete_sequence=["deepskyblue", "pink"]
+            color_discrete_sequence=["deepskyblue", "pink"],
         )
         st.plotly_chart(fig_teachers, use_container_width=True)
 
     st.subheader("📌 Mối tương quan giữa các chỉ số")
     available_vars = ["Trường", "Lớp", "Giáo viên", "Học sinh"]
-    scatter_x = st.selectbox("📎 Chọn biến trục X", available_vars, index=1, key="thcs_x")
-    scatter_y = st.selectbox("📎 Chọn biến trục Y", available_vars, index=3, key="thcs_y")
+    scatter_x = st.selectbox(
+        "📎 Chọn biến trục X", available_vars, index=1, key="thcs_x"
+    )
+    scatter_y = st.selectbox(
+        "📎 Chọn biến trục Y", available_vars, index=3, key="thcs_y"
+    )
 
     fig_scatter = px.scatter(
         df_filtered,
@@ -693,12 +740,9 @@ with tabs[2]:
         size=scatter_y,
         color="Địa phương",
         hover_name="Địa phương",
-        title=f"🎯 Tương quan giữa {scatter_x} và {scatter_y} theo địa phương"
+        title=f"🎯 Tương quan giữa {scatter_x} và {scatter_y} theo địa phương",
     )
-    fig_scatter.update_layout(
-        xaxis_title=scatter_x,
-        yaxis_title=scatter_y
-    )
+    fig_scatter.update_layout(xaxis_title=scatter_x, yaxis_title=scatter_y)
     st.plotly_chart(fig_scatter, use_container_width=True)
 
 
@@ -714,9 +758,13 @@ with tabs[3]:
 
     col1, col2 = st.columns(2)
     with col1:
-        selected_year = st.selectbox("📅 Chọn năm học", years, index=len(years)-1, key="thpt_year")
+        selected_year = st.selectbox(
+            "📅 Chọn năm học", years, index=len(years) - 1, key="thpt_year"
+        )
     with col2:
-        selected_province = st.selectbox("📍 Chọn địa phương", ["Tất cả"] + provinces, key="thpt_prov")
+        selected_province = st.selectbox(
+            "📍 Chọn địa phương", ["Tất cả"] + provinces, key="thpt_prov"
+        )
 
     df_filtered = df_thpt[df_thpt["Năm"] == selected_year]
     if selected_province != "Tất cả":
@@ -728,7 +776,10 @@ with tabs[3]:
     kpi2.metric("📚 Lớp", f'{df_filtered["Lớp"].sum():,.0f}')
     kpi3.metric("👩‍🏫 Giáo viên", f'{df_filtered["Giáo viên"].sum():,.0f}')
     kpi4.metric("👦 Học sinh", f'{df_filtered["Học sinh"].sum():,.0f}')
-    kpi5.metric("🧒 HS dân tộc thiểu số", f'{df_filtered["Học sinh dân tộc thiểu số"].sum():,.0f}')
+    kpi5.metric(
+        "🧒 HS dân tộc thiểu số",
+        f'{df_filtered["Học sinh dân tộc thiểu số"].sum():,.0f}',
+    )
 
     # ======= 3. Biểu đồ line theo năm (nếu chọn 1 tỉnh) =======
     if selected_province != "Tất cả":
@@ -739,7 +790,7 @@ with tabs[3]:
             "Trường": "#e6c910",
             "Lớp": "#e69b10",
             "Giáo viên": "#d65875",
-            "Học sinh": "#8088d1"
+            "Học sinh": "#8088d1",
         }
 
         line_cols = st.columns(2)
@@ -750,12 +801,9 @@ with tabs[3]:
                 y=column,
                 markers=True,
                 title=f"{column} qua các năm",
-                color_discrete_sequence=[color_map[column]]
+                color_discrete_sequence=[color_map[column]],
             )
-            fig.update_layout(
-                xaxis_title="Năm học",
-                yaxis_title=column
-            )
+            fig.update_layout(xaxis_title="Năm học", yaxis_title=column)
             with line_cols[i % 2]:
                 st.plotly_chart(fig, use_container_width=True)
 
@@ -775,12 +823,9 @@ with tabs[3]:
             orientation="h",
             title="🏆 Top 10 địa phương có số học sinh THPT cao nhất",
             color="Học sinh",
-            color_continuous_scale="Blues"
+            color_continuous_scale="Blues",
         )
-        fig_bar.update_layout(
-            yaxis_title="Địa phương",
-            xaxis_title="Số học sinh"
-        )
+        fig_bar.update_layout(yaxis_title="Địa phương", xaxis_title="Số học sinh")
 
         top_school = df_filtered.sort_values("Trường", ascending=False).head(10)
         top_school = top_school.sort_values("Trường", ascending=True)
@@ -794,12 +839,9 @@ with tabs[3]:
             orientation="h",
             title="🏫 Top 10 địa phương có nhiều trường THPT nhất",
             color="Trường",
-            color_continuous_scale="YlOrRd"
+            color_continuous_scale="YlOrRd",
         )
-        fig_school_bar.update_layout(
-            yaxis_title="Địa phương",
-            xaxis_title="Số trường"
-        )
+        fig_school_bar.update_layout(yaxis_title="Địa phương", xaxis_title="Số trường")
 
         col_bar1, col_bar2 = st.columns(2)
         with col_bar1:
@@ -815,7 +857,7 @@ with tabs[3]:
             [0.0, "#a6cee3"],
             [0.2, "#66b2d6"],
             [0.5, "#1f78b4"],
-            [1.0, "#08306b"]
+            [1.0, "#08306b"],
         ]
 
         fig_map_students = px.scatter_mapbox(
@@ -829,7 +871,7 @@ with tabs[3]:
             zoom=4,
             mapbox_style="carto-positron",
             title="🗺️ Học sinh theo địa phương",
-            color_continuous_scale=color_scale_students
+            color_continuous_scale=color_scale_students,
         )
 
         fig_map_schools = px.scatter_mapbox(
@@ -843,7 +885,7 @@ with tabs[3]:
             size_max=20,
             zoom=4,
             mapbox_style="carto-positron",
-            title="📏 Trường học theo địa phương"
+            title="📏 Trường học theo địa phương",
         )
 
         col_map1, col_map2 = st.columns(2)
@@ -851,7 +893,7 @@ with tabs[3]:
             st.plotly_chart(fig_map_students, use_container_width=True)
         with col_map2:
             st.plotly_chart(fig_map_schools, use_container_width=True)
-            
+
     # ========== BIỂU ĐỒ TỈ LỆ GIỚI TÍNH HỌC SINH VÀ GIÁO VIÊN ==========
     st.subheader("👩‍🎓👨‍🎓 Tỉ lệ giới tính học sinh và giáo viên")
     gender_col1, gender_col2 = st.columns(2)
@@ -861,11 +903,11 @@ with tabs[3]:
             names=["Nam", "Nữ"],
             values=[
                 df_filtered["Học sinh"].sum() - df_filtered["Học sinh nữ"].sum(),
-                df_filtered["Học sinh nữ"].sum()
+                df_filtered["Học sinh nữ"].sum(),
             ],
             hole=0.4,
             title="Tỉ lệ học sinh nam - nữ",
-            color_discrete_sequence=["deepskyblue", "pink"]
+            color_discrete_sequence=["deepskyblue", "pink"],
         )
         st.plotly_chart(fig_students, use_container_width=True)
 
@@ -874,18 +916,22 @@ with tabs[3]:
             names=["Nam", "Nữ"],
             values=[
                 df_filtered["Giáo viên"].sum() - df_filtered["Giáo viên nữ"].sum(),
-                df_filtered["Giáo viên nữ"].sum()
+                df_filtered["Giáo viên nữ"].sum(),
             ],
             hole=0.4,
             title="Tỉ lệ giáo viên nam - nữ",
-            color_discrete_sequence=["deepskyblue", "pink"]
+            color_discrete_sequence=["deepskyblue", "pink"],
         )
         st.plotly_chart(fig_teachers, use_container_width=True)
 
     st.subheader("📌 Mối tương quan giữa các chỉ số")
     available_vars = ["Trường", "Lớp", "Giáo viên", "Học sinh"]
-    scatter_x = st.selectbox("📎 Chọn biến trục X", available_vars, index=1, key="thpt_x")
-    scatter_y = st.selectbox("📎 Chọn biến trục Y", available_vars, index=3, key="thpt_y")
+    scatter_x = st.selectbox(
+        "📎 Chọn biến trục X", available_vars, index=1, key="thpt_x"
+    )
+    scatter_y = st.selectbox(
+        "📎 Chọn biến trục Y", available_vars, index=3, key="thpt_y"
+    )
 
     fig_scatter = px.scatter(
         df_filtered,
@@ -894,14 +940,11 @@ with tabs[3]:
         size=scatter_y,
         color="Địa phương",
         hover_name="Địa phương",
-        title=f"🎯 Tương quan giữa {scatter_x} và {scatter_y} theo địa phương"
+        title=f"🎯 Tương quan giữa {scatter_x} và {scatter_y} theo địa phương",
     )
-    fig_scatter.update_layout(
-        xaxis_title=scatter_x,
-        yaxis_title=scatter_y
-    )
-    st.plotly_chart(fig_scatter, use_container_width=True)  
-    
+    fig_scatter.update_layout(xaxis_title=scatter_x, yaxis_title=scatter_y)
+    st.plotly_chart(fig_scatter, use_container_width=True)
+
 with tabs[4]:
     st.header("👶 THỐNG KÊ GIÁO DỤC MẪU GIÁO")
 
@@ -916,7 +959,7 @@ with tabs[4]:
 
     col1, col2 = st.columns(2)
     with col1:
-        selected_year = st.selectbox("📅 Chọn năm học", years, index=len(years)-1)
+        selected_year = st.selectbox("📅 Chọn năm học", years, index=len(years) - 1)
     with col2:
         selected_province = st.selectbox("📍 Chọn địa phương", ["Tất cả"] + provinces)
 
@@ -941,21 +984,25 @@ with tabs[4]:
 
     with col_line1:
         fig_student = px.line(
-            df_mg_tq, x="Năm", y="Học sinh",
+            df_mg_tq,
+            x="Năm",
+            y="Học sinh",
             title="👶 Số lượng học sinh mẫu giáo qua các năm",
             markers=True,
             labels={"Học sinh": "Học sinh (nghìn)", "Năm": "Năm"},
-            color_discrete_sequence=["#1f78b4"]
+            color_discrete_sequence=["#1f78b4"],
         )
         st.plotly_chart(fig_student, use_container_width=True)
 
     with col_line2:
         fig_teacher = px.line(
-            df_mg_tq, x="Năm", y="Giáo viên",
+            df_mg_tq,
+            x="Năm",
+            y="Giáo viên",
             title="👩‍🏫 Số lượng giáo viên mẫu giáo qua các năm",
             markers=True,
             labels={"Giáo viên": "Giáo viên (nghìn)", "Năm": "Năm"},
-            color_discrete_sequence=["#e6c910"]
+            color_discrete_sequence=["#e6c910"],
         )
         st.plotly_chart(fig_teacher, use_container_width=True)
 
@@ -970,7 +1017,7 @@ with tabs[4]:
             df_top_students,
             path=["Địa phương"],
             values="Học sinh",
-            title="👶 Top 15 địa phương có nhiều học sinh mẫu giáo nhất"
+            title="👶 Top 15 địa phương có nhiều học sinh mẫu giáo nhất",
         )
         fig_tree_students.update_traces(textinfo="label+value")
         st.plotly_chart(fig_tree_students, use_container_width=True)
@@ -982,7 +1029,7 @@ with tabs[4]:
             df_top_schools,
             path=["Địa phương"],
             values="Trường học",
-            title="🏫 Top 15 địa phương có nhiều trường mẫu giáo nhất"
+            title="🏫 Top 15 địa phương có nhiều trường mẫu giáo nhất",
         )
         fig_tree_schools.update_traces(textinfo="label+value")
         st.plotly_chart(fig_tree_schools, use_container_width=True)
@@ -992,18 +1039,32 @@ with tabs[4]:
     col_map1, col_map2 = st.columns(2)
     with col_map1:
         fig_map_students = px.scatter_mapbox(
-            df_filtered, lat="Lat", lon="Lon", size="Học sinh", color="Học sinh",
-            hover_name="Địa phương", zoom=4, mapbox_style="carto-positron",
+            df_filtered,
+            lat="Lat",
+            lon="Lon",
+            size="Học sinh",
+            color="Học sinh",
+            hover_name="Địa phương",
+            zoom=4,
+            mapbox_style="carto-positron",
             title="🧒 Số học sinh theo địa phương",
-            color_continuous_scale="Blues", size_max=30
+            color_continuous_scale="Blues",
+            size_max=30,
         )
         st.plotly_chart(fig_map_students, use_container_width=True)
     with col_map2:
         fig_map_schools = px.scatter_mapbox(
-            df_filtered, lat="Lat", lon="Lon", size="Trường học", color="Trường học",
-            hover_name="Địa phương", zoom=4, mapbox_style="carto-positron",
+            df_filtered,
+            lat="Lat",
+            lon="Lon",
+            size="Trường học",
+            color="Trường học",
+            hover_name="Địa phương",
+            zoom=4,
+            mapbox_style="carto-positron",
             title="🏫 Số trường theo địa phương",
-            color_continuous_scale="YlOrRd", size_max=30
+            color_continuous_scale="YlOrRd",
+            size_max=30,
         )
         st.plotly_chart(fig_map_schools, use_container_width=True)
 
@@ -1011,22 +1072,26 @@ with tabs[4]:
     st.subheader("🔥 Chỉ số phát triển theo năm")
 
     # Chọn cột và đổi tên ngắn gọn
-    df_pct = df_mg_tq[[
-        "Năm",
-        "Chỉ số phát triển (%) - Trường học",
-        "Chỉ số phát triển (%) - Lớp học",
-        "Chỉ số phát triển (%) - Giáo viên",
-        "Chỉ số phát triển (%) - Học sinh",
-        "Chỉ số phát triển (%) - Số học sinh bình quân một giáo viên",
-        "Chỉ số phát triển (%) - Số học sinh bình quân một lớp học"
-    ]].rename(columns={
-        "Chỉ số phát triển (%) - Trường học": "Trường",
-        "Chỉ số phát triển (%) - Lớp học": "Lớp",
-        "Chỉ số phát triển (%) - Giáo viên": "Giáo viên",
-        "Chỉ số phát triển (%) - Học sinh": "Học sinh",
-        "Chỉ số phát triển (%) - Số học sinh bình quân một giáo viên": "HS/GV",
-        "Chỉ số phát triển (%) - Số học sinh bình quân một lớp học": "HS/Lớp"
-    })
+    df_pct = df_mg_tq[
+        [
+            "Năm",
+            "Chỉ số phát triển (%) - Trường học",
+            "Chỉ số phát triển (%) - Lớp học",
+            "Chỉ số phát triển (%) - Giáo viên",
+            "Chỉ số phát triển (%) - Học sinh",
+            "Chỉ số phát triển (%) - Số học sinh bình quân một giáo viên",
+            "Chỉ số phát triển (%) - Số học sinh bình quân một lớp học",
+        ]
+    ].rename(
+        columns={
+            "Chỉ số phát triển (%) - Trường học": "Trường",
+            "Chỉ số phát triển (%) - Lớp học": "Lớp",
+            "Chỉ số phát triển (%) - Giáo viên": "Giáo viên",
+            "Chỉ số phát triển (%) - Học sinh": "Học sinh",
+            "Chỉ số phát triển (%) - Số học sinh bình quân một giáo viên": "HS/GV",
+            "Chỉ số phát triển (%) - Số học sinh bình quân một lớp học": "HS/Lớp",
+        }
+    )
 
     # Tính phần trăm thay đổi so với năm trước
     df_pct_change = df_pct.set_index("Năm").pct_change().dropna() * 100
@@ -1042,7 +1107,7 @@ with tabs[4]:
         y=df_pct_change.index.astype(str).tolist(),
         annotation_text=text_matrix.values,
         showscale=True,
-        colorscale=[[0, "red"], [0.5, "white"], [1, "green"]]
+        colorscale=[[0, "red"], [0.5, "white"], [1, "green"]],
     )
 
     fig_matrix.update_layout(title="📉 Biến động (%) so với năm trước")
@@ -1055,7 +1120,12 @@ with tabs[4]:
     x_var = st.selectbox("Biến trục X", options, index=0)
     y_var = st.selectbox("Biến trục Y", options, index=3)
     fig_scatter = px.scatter(
-        df_filtered, x=x_var, y=y_var, color="Địa phương", size=y_var,
-        hover_name="Địa phương", title=f"Tương quan giữa {x_var} và {y_var}"
+        df_filtered,
+        x=x_var,
+        y=y_var,
+        color="Địa phương",
+        size=y_var,
+        hover_name="Địa phương",
+        title=f"Tương quan giữa {x_var} và {y_var}",
     )
     st.plotly_chart(fig_scatter, use_container_width=True)
