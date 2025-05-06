@@ -1,9 +1,15 @@
 [project]
 name = "dv-final"
 version = "0.1.0"
-description = "Add your description here"
+description = "Đồ án cuối kỳ Trực quan hóa dữ liệu - Phân tích Giáo dục Việt Nam"
 readme = "README.md"
 requires-python = ">=3.12"
+
+# Giữ lại thông tin tác giả
+authors = [
+    { name = "Group 13 - 22KHDL1", email = "tonytheluftman@gmail.com" }
+]
+
 dependencies = [
     "dotenv>=0.9.9",
     "google-genai>=1.13.0",
@@ -14,3 +20,4 @@ dependencies = [
     "seaborn>=0.13.2",
     "streamlit>=1.45.0",
 ]
+
