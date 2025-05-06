@@ -32,35 +32,38 @@ Graphora cung cấp các phân hệ chức năng chính sau (truy cập qua side
 * **Deployment:** Docker, Fly.io (dựa trên `Dockerfile` và `fly.toml`)
 * **Quản lý Biến môi trường:** `python-dotenv`
 
-## 📁 Cấu trúc thư mục dự án
+## 📁 Cấu trúc Thư Mục Dự Án
+
+```plaintext
 graphora/
-├── Home.py                    # Trang chủ giới thiệu ứng dụng (Điểm vào chính)
+├── Home.py                  # Trang chính (entry point) của ứng dụng Streamlit
 │
-├── pages/                     # Chứa các module chức năng (mỗi file .py là một trang)
+├── pages/                   # Các trang con (tự động hiển thị trong thanh điều hướng Streamlit)
 │   ├── 1_Data_Wrangling.py
 │   ├── 2_EDA.py
 │   ├── 3_Dashboard.py
 │   └── 4_AI_Assistant.py
 │
-├── data/                      # Thư mục chứa dữ liệu nguồn
-├── data_1/                    # Thư mục chứa dữ liệu khác (cần làm rõ)
+├── data/                    # Dữ liệu nguồn chính
+├── data_1/                  # Dữ liệu bổ sung (cần làm rõ chức năng)
 │
-├── utils/                     # (Nên có) Chứa các hàm tiện ích dùng chung
+├── utils/                   # Các hàm tiện ích dùng chung (reusable functions)
+├── assets/                  # Tài nguyên tĩnh (ảnh, logo, CSS, v.v.)
 │
-├── assets/                    # (Nên có) Chứa các tài nguyên tĩnh (ảnh, logo)
+├── .streamlit/              # Cấu hình giao diện và menu cho Streamlit
+├── .github/                 # Cấu hình CI/CD với GitHub Actions
 │
-├── .github/                   # Cấu hình Github Actions (CI/CD)
-├── .streamlit/                # Cấu hình Streamlit
+├── Dockerfile               # Cấu hình Docker để build ứng dụng
+├── fly.toml                 # Cấu hình deployment với Fly.io
+├── pyproject.toml           # Định nghĩa metadata dự án và dependencies (UV/Poetry)
+├── uv.lock                  # File lock dependencies tạo bởi UV
 │
-├── Dockerfile                 # Cấu hình Docker image
-├── fly.toml                   # Cấu hình deployment Fly.io
-├── pyproject.toml             # File cấu hình dự án và dependencies (cho UV/Poetry/Hatch...)
-├── uv.lock                    # File lock dependencies của UV
-├── .env                       # File chứa biến môi trường (VD: GEMINI_API_KEY) - Không đưa lên Git
-├── .gitignore                 # Các file/folder Git bỏ qua
-├── .dockerignore              # Các file/folder Docker bỏ qua
-├── .python-version            # Chỉ định phiên bản Python (cho pyenv)
-└── README.md                  # File mô tả dự án này
+├── .env                     # Biến môi trường (ví dụ: API keys) – không commit lên Git
+├── .gitignore               # Định nghĩa các file/folder cần bỏ qua trong Git
+├── .dockerignore            # Định nghĩa các file/folder cần bỏ qua khi build Docker
+├── .python-version          # Chỉ định phiên bản Python (cho pyenv)
+└── README.md                # Mô tả tổng quan dự án
+```
 
 ## ⚙️ Cài đặt và Chạy dự án
 
